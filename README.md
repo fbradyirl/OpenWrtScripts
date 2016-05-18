@@ -17,6 +17,6 @@ chmod +x /usr/bin/status_watcher.sh
 chmod +x /usr/bin/openvpn-status.sh
 
 # Add to begining of startup script
-sed -i '1ish status_watcher.sh &' /etc/rc.local
+sed -i '1istatus_watcher.sh &' /etc/rc.local
 ```
 Now, just fill in required fields in /etc/config/push
