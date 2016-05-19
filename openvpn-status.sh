@@ -24,7 +24,7 @@ printIPs () {
 
 		for ip in $ips
 		do
-		json=$(curl http://freegeoip.net/json/$ip ; echo)
+		json=$(curl -s http://freegeoip.net/json/$ip ; echo)
 		json_load "$json"
 		json_get_var country country_name
 
@@ -32,12 +32,7 @@ printIPs () {
 			country=" ($country)"
 		fi;		
 
-                dname=$(nslookup $ip | grep ^Name -A1| awk '{print $4}' | tr '\n' ' ')		
-                if [ "$dname" != "" ]; then
-                        dname=" ($dname)"
-                fi;
-
-		echo "->ip: $ip$country$dname"
+		echo "->ip: $ip$country"
 		done
 	fi;
 
