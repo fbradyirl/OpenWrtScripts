@@ -7,7 +7,7 @@
 
 # To start this file on boot,
 # To run it at startup run command
-# echo 'sh status_watcher.sh &' >> /etc/rc.local 
+# echo 'sh status_watcher.sh &' >> /etc/rc.local
 
 log() {
         echo "status_watcher.sh: $@"
@@ -16,7 +16,7 @@ log() {
 
 SLEEPTIME=60
 
-# Assuming this is run on boot, the status files will be 
+# Assuming this is run on boot, the status files will be
 # empty. Storing this, so that we can see when
 # all connections are gone.
 ZERO_CONNECTIONS_HASH="$(openvpn-status.sh | md5sum)"
@@ -30,15 +30,14 @@ while true; do
 	#log "OLD_CONNECTIONS_HASH: $OLD_CONNECTIONS_HASH"
 
 	if [ "$NEW_CONNECTIONS_HASH" == "$ZERO_CONNECTIONS_HASH" ] ; then
-                log "Zero new openvpn connections detected. Sleeping for $SLEEPTIME seconds..."
-                sleep $SLEEPTIME		
+        log "Zero new openvpn connections detected. Sleeping for $SLEEPTIME seconds..."
 	elif [ "$NEW_CONNECTIONS_HASH" != "$OLD_CONNECTIONS_HASH" ] ; then
-		log "OpenVPN connection change detected"
+		log "push new $HOSTNAME VPN Update" "$(openvpn-status.sh). Sleeping for $SLEEPTIME seconds..."
 		push.sh "$HOSTNAME VPN Update" "$(openvpn-status.sh)"
 		OLD_CONNECTIONS_HASH="$NEW_CONNECTIONS_HASH"
 	else
-		log "No updates to openvpn status file."
-		log "Sleeping for $SLEEPTIME seconds..."
-		sleep $SLEEPTIME
+		log "No updates to openvpn status file. Sleeping for $SLEEPTIME seconds..."
 	fi
+    sleep $SLEEPTIME
+
 done
