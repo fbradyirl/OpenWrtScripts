@@ -17,7 +17,7 @@ API=$(uci get push.pushbullet.push_api)
 
 if [ $PB_ENABLED == 1 ]; then
 	if [ ! -z $API ]; then
-  		curl -k -u $API: https://api.pushbullet.com/v2/pushes -d type=note -d title="$SUBJECT" -d body="$MSG" > /dev/null 2>&1
+  		curl -k -u $API: https://api.pushbullet.com/v2/pushes -d type=note --data-urlencode "title=$SUBJECT" --data-urlencode "body=$MSG" > /dev/null 2>&1
 	else
   		log "Set your PushBullet API key in /etc/config/push"
 	fi
